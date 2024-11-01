@@ -11,12 +11,14 @@ main() {
 	local opt_fgcolor
 	local opt_bgcolor
 
-	opt_tz="$(get_tmux_option "@world_clock_tz" "US/Eastern")"
-	opt_fmt="$(get_tmux_option "@world_clock_fmt" "#[bold]%tz#[nobold]:_%H:%M")"
-	opt_fgcolor="$(get_tmux_option "@world_clock_fgcolor" "default")"
-	opt_bgcolor="$(get_tmux_option "@world_clock_bgcolor" "default")"
+	opt_tz="$(tmux_get_option "@world_clock_tz" "US/Eastern")"
+	opt_fmt="$(tmux_get_option "@world_clock_fmt" "#[bold]%Z#[nobold]: %H:%M")"
+	opt_fgcolor="$(tmux_get_option "@world_clock_fgcolor" "default")"
+	opt_bgcolor="$(tmux_get_option "@world_clock_bgcolor" "default")"
 
-	"${CURRENT_DIR}/clock.py" "$opt_tz" "$opt_bgcolor" "$opt_fgcolor" "$opt_fmt"
+	export TZ=$opt_tz
+
+	echo "#[fg='${opt_fgcolor}',bg='${opt_bgcolor}']$(date "+$opt_fmt")"
 }
 
 main
